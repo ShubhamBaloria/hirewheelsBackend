@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/hirewheels/v1")
@@ -31,7 +28,11 @@ public class AdminController {
 
         VehicleDTO vehicleDTO1 =modelMapper.map(savedVehicle, VehicleDTO.class);
         return new ResponseEntity(vehicleDTO1, HttpStatus.ACCEPTED);
-
-
+    }
+    @PutMapping(value = "/vehicles/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity UpdateVehicle(@RequestBody VehicleDTO vehicleDTO, @PathVariable(name = "id")int id){
+    Vehicle vehicle = adminService.changeAvailability(id,vehicleDTO.getAvailabilityStatus());
+VehicleDTO response =modelMapper.map(vehicle, VehicleDTO.class );
+return  new ResponseEntity(response, HttpStatus.ACCEPTED);
     }
 }
